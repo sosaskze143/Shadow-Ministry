@@ -2,33 +2,35 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>شبكة المواقع | وزارة الظلال</title>
+    <title>منظومة الخدمات | وزارة الظلال</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="sites-layout">
-    <h1 class="page-main-title">منظومة وزارة الظلال الرقمية</h1>
-    <div class="sites-grid">
-        <div class="glass-card site-item">
-            <i class="fas fa-university site-icon"></i>
-            <h3>البنك المركزي</h3>
-            <p>إدارة الاعتمادات المالية والرواتب الوطنية.</p>
-            <button class="site-btn">دخول</button>
+<body class="bg-darker">
+    <div class="container text-center py-5">
+        <h2 class="gold-text mb-5">بوابة الخدمات المتكاملة</h2>
+        <div class="services-grid">
+            <div class="glass-card service-box">
+                <div class="service-icon"><i class="fas fa-university"></i></div>
+                <h3>البنك المركزي</h3>
+                <p>إدارة الحسابات المالية السيادية والرواتب.</p>
+                <button class="btn-enter">دخول النظام</button>
+            </div>
+            <div class="glass-card service-box">
+                <div class="service-icon"><i class="fas fa-car-side"></i></div>
+                <h3>المركبات الوطنية</h3>
+                <p>إدارة التراخيص والمخالفات المرورية المركزية.</p>
+                <button class="btn-enter">دخول النظام</button>
+            </div>
+            <div class="glass-card service-box">
+                <div class="service-icon"><i class="fas fa-briefcase-medical"></i></div>
+                <h3>الضمان الصحي</h3>
+                <p>السجلات الطبية والتأمين الصحي للمواطنين.</p>
+                <button class="btn-enter">دخول النظام</button>
+            </div>
         </div>
-        <div class="glass-card site-item">
-            <i class="fas fa-car site-icon"></i>
-            <h3>المركبات والمخالفات</h3>
-            <p>نظام التتبع المروري وتراخيص النقل.</p>
-            <button class="site-btn">دخول</button>
+        <div class="mt-5">
+            <a href="/user_home" class="back-link-gold">العودة للبوابة الشخصية</a>
         </div>
-        <div class="glass-card site-item">
-            <i class="fas fa-briefcase site-icon"></i>
-            <h3>خدماتي السيادية</h3>
-            <p>منصة تقديم الطلبات والخدمات العامة.</p>
-            <button class="site-btn">دخول</button>
-        </div>
-    </div>
-    <div style="text-align:center; margin-top:30px;">
-        <a href="/user_home" class="btn-shadow">العودة للرئيسية</a>
     </div>
 </body>
 </html>
