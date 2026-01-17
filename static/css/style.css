@@ -1,65 +1,134 @@
-/* الألوان والهوية السيادية */
+/* Shadow Ministry Sovereign UI v2.0 
+   Theme: Dark Glassmorphism & Gold Industrial
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap');
+
 :root {
     --gold: #d4af37;
-    --dark-bg: #0a0b10;
-    --glass: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --red: #ff4d4d;
-    --green: #00ff88;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --deep-bg: #050505;
+    --glass-bg: rgba(20, 20, 20, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --danger: #ff3e3e;
+    --success: #00ff88;
+    --text-main: #e0e0e0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
 
 body {
-    background: radial-gradient(circle at center, #1a1c2c 0%, #0a0b10 100%);
-    color: #fff; min-height: 100vh; overflow-x: hidden;
+    background: var(--deep-bg);
+    background-image: radial-gradient(circle at top right, #1a1a1a 0%, #050505 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* الكروت الزجاجية */
+/* --- الحاويات الرئيسية --- */
+.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+.py-5 { padding: 50px 0; }
+.text-center { text-align: center; }
+
+/* --- تأثير الزجاج (Glassmorphism) --- */
 .glass-card {
-    background: var(--glass);
-    backdrop-filter: blur(20px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
-/* القائمة الجانبية */
-.side-nav {
-    position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
-    background: rgba(10, 11, 16, 0.98); backdrop-filter: blur(30px);
-    z-index: 1000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 1px solid var(--glass-border); padding: 40px 20px;
-}
-.side-nav.open { right: 0; }
-
-/* البطاقة الرقمية */
-.digital-id {
-    max-width: 450px; margin: auto; position: relative;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-}
-.user-photo-box img {
-    width: 120px; height: 150px; border-radius: 12px;
-    border: 2px solid var(--gold); object-fit: cover;
+/* --- العناوين والخطوط --- */
+.gold-text {
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold-glow);
+    font-weight: 900;
 }
 
-/* الأزرار */
-.btn-shadow, .glass-btn {
-    padding: 12px 25px; border-radius: 12px; border: 1px solid var(--gold);
-    background: transparent; color: var(--gold); cursor: pointer;
-    transition: 0.3s; font-weight: bold; text-decoration: none; display: inline-block;
+/* --- الأزرار السيادية --- */
+.btn-main, .btn-gold-block, .btn-submit-gold, .btn-broadcast {
+    background: linear-gradient(45deg, #8a6d10, var(--gold));
+    color: #000; border: none; padding: 15px 30px;
+    border-radius: 8px; font-weight: 700; cursor: pointer;
+    transition: 0.3s; text-decoration: none; display: inline-block;
 }
-.btn-shadow:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
 
-/* جدول الإدارة */
-.sovereign-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-.sovereign-table th { color: var(--gold); padding: 15px; border-bottom: 1px solid var(--glass-border); }
-.sovereign-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--gold-glow); }
 
-/* الأنميشن */
-@keyframes scanLine { 0% { top: 0; } 100% { top: 100%; } }
+.btn-outline-gold {
+    border: 1px solid var(--gold); color: var(--gold);
+    background: transparent; padding: 10px 20px; border-radius: 8px;
+    text-decoration: none; transition: 0.3s;
+}
+
+/* --- النماذج والمدخلات (Grid System) --- */
+.smart-form .input-field { margin-bottom: 20px; text-align: right; }
+
+input, select, textarea {
+    width: 100%; padding: 12px; background: rgba(0,0,0,0.5);
+    border: 1px solid var(--glass-border); border-radius: 6px;
+    color: white; font-size: 1rem; margin-top: 8px;
+}
+
+input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 8px var(--gold-glow); }
+
+.form-grid-3, .inputs-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+.form-grid-4, .inputs-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+
+/* --- البطاقة الرقمية (ID Card) --- */
+.id-card {
+    max-width: 450px; margin: 20px auto;
+    border: 1px solid var(--gold-glow); position: relative;
+}
+
+.id-photo img {
+    width: 120px; height: 140px; border: 2px solid var(--gold);
+    border-radius: 10px; object-fit: cover;
+}
+
+/* --- الكاميرا والمسح الضوئي --- */
+.camera-frame {
+    position: relative; width: 100%; max-width: 500px; margin: 20px auto;
+    border-radius: 20px; overflow: hidden; border: 2px solid var(--glass-border);
+}
+
+#webcam { width: 100%; transform: scaleX(-1); }
+
 .scan-line {
-    position: absolute; width: 100%; height: 2px; background: var(--gold);
-    top: 0; animation: scanLine 2s infinite linear; box-shadow: 0 0 15px var(--gold);
+    position: absolute; top: 0; width: 100%; height: 4px;
+    background: var(--gold); animation: scanning 2s infinite linear;
+    box-shadow: 0 0 20px var(--gold);
+}
+
+@keyframes scanning { 0% { top: 0; } 100% { top: 100%; } }
+
+/* --- الجداول الإدارية --- */
+.sovereign-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+.sovereign-table th { color: var(--gold); border-bottom: 2px solid var(--gold); padding: 15px; }
+.sovereign-table td { padding: 15px; border-bottom: 1px solid var(--glass-border); text-align: center; }
+
+/* --- صفحة الحظر (Red Cross) --- */
+.blocked-screen { background: #1a0000; }
+.red-cross-icon { font-size: 80px; color: var(--danger); margin-bottom: 20px; }
+
+/* --- القائمة الجانبية (Sidebar) --- */
+.side-panel {
+    position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
+    background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px);
+    border-left: 1px solid var(--gold-glow); z-index: 2000;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.side-panel.open { right: 0; }
+
+/* --- الجوال (Mobile Responsive) --- */
+@media (max-width: 768px) {
+    .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; }
+    .glass-card { padding: 15px; }
+    .gold-text { font-size: 1.5rem; }
 }
