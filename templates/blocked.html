@@ -1,29 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>الدخول مرفوض | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>دخول مرفوض</title>
 </head>
-<body class="blocked-screen">
-    <div class="error-container">
-        <div class="glass-card blocked-box">
-            <div class="red-cross-icon">
-                <i class="fas fa-times-circle"></i>
-            </div>
-            <h1 class="alert-title">الدخول مرفوض سيادياً</h1>
-            <div class="alert-body">
-                <p>نحيطكم علماً بأن هذا الحساب قد تم <strong>حظر وصوله</strong> للأنظمة المركزية بناءً على التعليمات الأمنية العليا.</p>
-                <div class="instruction-box">
-                    <i class="fas fa-info-circle"></i>
-                    <span>يجب مراجعة أقرب فرع لوزارة الظلال لتحديث بياناتك وتصفية الحالة القانونية.</span>
-                </div>
-            </div>
-            <div class="alert-footer">
-                <a href="/logout" class="btn-close-session">إغلاق الجلسة</a>
-            </div>
+<body>
+    <div class="flex-center" style="height: 100vh;">
+        <div class="glass-card text-center" style="border: 2px solid #ff4444;">
+            <div style="font-size: 80px; color: #ff4444;">&times;</div>
+            <h1 style="color: #ff4444;">أنت محظور من الدخول</h1>
+            <p style="color: #ff4444; font-weight: bold; margin: 20px 0;">
+                لقد تم تقييد وصولك إلى أنظمة وزارة الظلال. <br>
+                يرجى التوجه فوراً لأقرب فرع للوزارة لتسوية وضعك الأمني.
+            </p>
+            <a href="/user_login" class="btn-gold" style="background: #ff4444; color: white;">رجوع</a>
         </div>
     </div>
 </body>
