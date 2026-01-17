@@ -1,66 +1,57 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>البوابة الشخصية | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>البوابة الوطنية | وزارة الظلال</title>
 </head>
-<body class="dashboard-bg">
-    <aside id="sideMenu" class="side-panel">
-        <div class="panel-brand">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" width="60">
-            <h3>منظومة الظلال</h3>
+<body>
+    <header class="shadow-header">
+        <div class="logo-section">
+            <img src="/static/images/logo.png">
+            <h1>وزارة الظلال</h1>
         </div>
-        <nav class="panel-nav">
-            <a href="/user_home" class="active"><i class="fas fa-id-badge"></i> الهوية الرقمية</a>
-            <a href="/my_data"><i class="fas fa-file-invoice"></i> السجل المعلوماتي</a>
-            <a href="/sites"><i class="fas fa-project-diagram"></i> شبكة الخدمات</a>
-            <hr class="nav-divider">
-            <a href="/logout" class="logout-item"><i class="fas fa-power-off"></i> إنهاء الجلسة</a>
-        </nav>
-    </aside>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </header>
 
-    <div class="main-wrapper">
-        <header class="top-bar">
-            <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
-            <div class="user-greeting">مرحباً، <span class="gold-text">{{ user.fname_ar }}</span></div>
-        </header>
+    <div id="sideMenu" class="side-nav">
+        <a href="/user_home">الصفحة الرئيسية</a>
+        <a href="/sites">مواقعنا</a>
+        <a href="/my_data">بياناتي</a>
+        <a href="/logout">تسجيل خروج</a>
+    </div>
 
-        <main class="content-view">
-            <div class="glass-card id-card">
-                <div class="card-header">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" class="mini-logo">
-                    <div class="header-titles">
-                        <h4>المملكة - وزارة الظلال</h4>
-                        <p>بطاقة الهوية السيادية الرقمية</p>
-                    </div>
+    <main class="container">
+        <div class="glass-card user-id-card">
+            <div class="id-grid">
+                <div class="user-photo">
+                    <img src="/static/faces/{{ user.id_num }}.jpg" alt="صورة المواطن">
                 </div>
-                <div class="card-content">
-                    <div class="id-photo">
-                        <img src="/static/faces/{{ user.id_num }}.jpg" onerror="this.src='/static/images/user_placeholder.png'">
-                        <div class="status-indicator">نشط</div>
+                <div class="user-details">
+                    <h2 class="gold-text">{{ user.fname_ar }} {{ user.mname_ar }} {{ user.gname_ar }} {{ user.lname_ar }}</h2>
+                    <p class="en-name">{{ user.fname_en }} {{ user.mname_en }} {{ user.gname_en }} {{ user.lname_en }}</p>
+                    
+                    <div class="info-row">
+                        <span>رقم الهوية:</span>
+                        <span class="value">{{ user.id_num }}</span>
                     </div>
-                    <div class="id-details">
-                        <div class="detail-group">
-                            <label>الاسم الكامل</label>
-                            <span class="value">{{ user.fname_ar }} {{ user.lname_ar }}</span>
-                        </div>
-                        <div class="detail-group">
-                            <label>رقم الهوية</label>
-                            <span class="value id-font">{{ user.id_num }}</span>
-                        </div>
-                        <div class="detail-group">
-                            <label>تاريخ الصلاحية</label>
-                            <span class="value">{{ user.expiry }}</span>
-                        </div>
+                    <div class="info-row">
+                        <span>تاريخ الميلاد:</span>
+                        <span class="value">{{ user.dob }}</span>
+                    </div>
+                    <div class="info-row status-active">
+                        <span>تاريخ الانتهاء:</span>
+                        <span class="value">{{ user.expiry }}</span>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+            <div class="card-footer">بطاقة هوية وطنية رقمية مشفرة</div>
+        </div>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
