@@ -2,109 +2,39 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="manifest" href="/manifest.json">
     <title>وزارة الظلال | البوابة السيادية</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-    <meta name="theme-color" content="#D4AF37">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-dark">
-    <header class="main-header flex-center">
-        <div class="logo-area">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار وزارة الظلال">
-            <h1>وزارة الظلال</h1>
-            <p class="subtitle">السيادة الرقمية والأمن القومي</p>
+<body>
+    <header class="shadow-header">
+        <div class="logo-section">
+            <img src="/static/images/logo.png" alt="الشعار">
+            <div>
+                <h1>وزارة الظلال</h1>
+                <p>نظام السيادة الرقمية الموحد</p>
+            </div>
+        </div>
+        <div class="auth-buttons">
+            <a href="/user_login" class="btn-gold">دخول المواطن</a>
+            <a href="/admin_login" id="adminBtn" class="btn-gold">دخول المشرف</a>
         </div>
     </header>
 
     <main class="container">
-        <section class="action-panel glass-panel flex-center">
-            <div class="action-content text-center">
-                <h2>نظام الدخول الموحد</h2>
-                <p>يرجى اختيار بوابة الدخول الخاصة بك للمتابعة</p>
-                <div class="grid-2">
-                    <a href="/user_login" class="btn-primary">
-                        <i class="fas fa-user-shield"></i> بوابة المواطنين
-                    </a>
-                    <a href="/admin_login" class="btn-primary">
-                        <i class="fas fa-user-tie"></i> بوابة الإدارة السيادية
-                    </a>
-                </div>
-            </div>
-        </section>
+        <div class="glass-card text-center">
+            <h2>مرحباً بك في البوابة الوطنية</h2>
+            <p>منصة شاملة لإدارة الهوية الرقمية، الخدمات البنكية، والسيارات عبر بروتوكولات أمنية مشفرة.</p>
+        </div>
     </main>
 
-    <footer class="main-footer flex-center">
-        <p>&copy; 2026 وزارة الظلال. جميع الحقوق محفوظة للأنظمة السيادية.</p>
-    </footer>
-
-    <style>
-        /* Specific styles for index.html - can be moved to style.css if preferred */
-        body.bg-dark {
-            background-image: url("{{ url_for('static', filename='images/bg-pattern.png') }}"); /* خلفية بنمط داكن */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .main-header {
-            background-color: var(--color-background-light);
-            padding: 40px 0;
-            border-bottom: 2px solid var(--color-primary);
-            box-shadow: var(--shadow-heavy);
-            margin-bottom: 50px;
-        }
-
-        .main-header .logo-area {
-            text-align: center;
-        }
-
-        .main-header img {
-            max-height: 120px; /* حجم كبير للشعار في البداية */
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
-        }
-
-        .main-header h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-        }
-
-        .main-header .subtitle {
-            font-size: 1.2rem;
-            color: var(--color-text-dark);
-        }
-
-        .action-panel {
-            max-width: 800px; /* تحديد عرض البانل المركزي */
-            margin: 0 auto;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .action-content h2 {
-            font-size: 2.5rem;
-        }
-
-        .action-content p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        .btn-primary i {
-            margin-left: 10px;
-            font-size: 1.2rem;
-        }
-
-        .main-footer {
-            margin-top: auto; /* يدفع الفوتر للأسفل */
-            padding: 20px;
-            background-color: var(--color-background-light);
-            border-top: 1px solid var(--color-border);
-            color: var(--color-text-dark);
-            font-size: 0.9rem;
-        }
-    </style>
+    <script>
+        // إجبار تثبيت PWA عند محاولة دخول المشرف
+        document.getElementById('adminBtn').addEventListener('click', (e) => {
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                alert("يجب تثبيت المنظومة كتطبيق (PWA) على الشاشة الرئيسية للمتابعة كمسؤول.");
+            }
+        });
+    </script>
 </body>
 </html>
