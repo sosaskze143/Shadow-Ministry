@@ -4,40 +4,28 @@
     <meta charset="UTF-8">
     <title>التحقق الحيوي | وزارة الظلال</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="/static/manifest.json">
 </head>
-<body class="camera-layout">
-    <div class="camera-glass-container">
-        <h3 class="gold-text">نظام مطابقة الملامح السيادي</h3>
-        <p>يرجى وضع الوجه داخل الإطار لبدء التحليل</p>
-        
-        <div class="video-wrapper">
-            <video id="webcam" autoplay playsinline></video>
-            <div class="scan-frame">
-                <div class="scan-line"></div>
+<body class="bg-darker">
+    <div class="scan-container">
+        <div class="glass-card scan-box">
+            <h2 class="gold-text">مطابقة البصمة الحيوية</h2>
+            <p>يرجى النظر مباشرة إلى الكاميرا في منطقة الإضاءة</p>
+            
+            <div class="camera-frame">
+                <video id="webcam" autoplay playsinline></video>
+                <div class="scanner-overlay">
+                    <div class="scan-line"></div>
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+                </div>
             </div>
+
+            <div id="status-bar" class="status-msg">جاري تهيئة النظام...</div>
+            <button id="capture-btn" class="btn-scan" onclick="startScanning()">بدء التحليل الفوري</button>
         </div>
-
-        <div id="status-bar" class="status-waiting">في انتظار الصلاحيات...</div>
-        <button id="capture-btn" class="glass-btn gold">بدء التعرف</button>
     </div>
-
-    <script>
-        const video = document.getElementById('webcam');
-        const btn = document.getElementById('capture-btn');
-        const status = document.getElementById('status-bar');
-
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-            .then(stream => { video.srcObject = stream; status.innerText = "النظام جاهز للتحليل"; })
-            .catch(err => { status.innerText = "خطأ: الكاميرا غير مفعلة"; });
-
-        btn.onclick = () => {
-            status.innerText = "جاري تحليل الملامح ومطابقة البصمة...";
-            status.className = "status-processing";
-            setTimeout(() => {
-                window.location.href = "/auth_success";
-            }, 3000);
-        };
-    </script>
+    <script src="{{ url_for('static', filename='js/face_logic.js') }}"></script>
 </body>
 </html>
