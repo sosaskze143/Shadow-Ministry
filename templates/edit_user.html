@@ -6,15 +6,41 @@
 </head>
 <body>
     <div class="glass-card">
-        <h2 class="gold-text">تعديل ملف المواطن: {{ user.id_num }}</h2>
+        <h2 class="gold-text">تعديل ملف المواطن السيادي</h2>
         <form action="/admin/update_user/{{ user.id_num }}" method="POST">
+            
             <div class="grid-4">
                 <input type="text" name="fname_ar" value="{{ user.fname_ar }}">
                 <input type="text" name="mname_ar" value="{{ user.mname_ar }}">
                 <input type="text" name="gname_ar" value="{{ user.gname_ar }}">
                 <input type="text" name="lname_ar" value="{{ user.lname_ar }}">
             </div>
-            <button type="submit" class="btn-gold mt-30">حفظ التغييرات السيادية</button>
+
+            <div class="grid-3 mt-20">
+                <input type="text" name="id_num" value="{{ user.id_num }}" readonly>
+                <input type="text" name="fingerprint_id" value="{{ user.fingerprint_id }}">
+                <select name="gender">
+                    <option value="ذكر" {% if user.gender == 'ذكر' %}selected{% endif %}>ذكر</option>
+                    <option value="أنثى" {% if user.gender == 'أنثى' %}selected{% endif %}>أنثى</option>
+                </select>
+            </div>
+
+            <div class="grid-3 mt-20">
+                <select name="job_cat">
+                    <option value="لايوجد" {% if user.job_cat == 'لايوجد' %}selected{% endif %}>لايوجد</option>
+                    <option value="طالب" {% if user.job_cat == 'طالب' %}selected{% endif %}>طالب</option>
+                    <option value="خاص" {% if user.job_cat == 'خاص' %}selected{% endif %}>خاص</option>
+                    <option value="حكومي" {% if user.job_cat == 'حكومي' %}selected{% endif %}>حكومي</option>
+                </select>
+                <input type="text" name="job_title" value="{{ user.job_title }}">
+                <select name="region">
+                    {% for i in range(1, 26) %}
+                    <option value="منطقة {{ i }}" {% if user.region == 'منطقة ' ~ i %}selected{% endif %}>منطقة {{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn-gold mt-30" style="width:100%">حفظ التعديلات النهائية</button>
         </form>
     </div>
 </body>
