@@ -14,33 +14,30 @@ from tinydb import TinyDB, Query
 
 app = Flask(__name__)
 app.secret_key = "SHADOW_MINISTRY_SUPREME_VAULT_2026"
-
-# إعدادات الجلسة (Session) - خروج بعد 10 دقائق من الخمول
 app.permanent_session_lifetime = timedelta(minutes=10)
 
-# --- 1. الإعدادات والبيانات السيادية ---
+# --- الإعدادات السيادية ---
 TELEGRAM_TOKEN = "8415250551:AAEv6B1Evhc_NNKhH1o76PBUl1UNVMYVT2U"
 ADMIN_CHAT_ID = "8338737071"
 EMAIL_USER = "azlal.gov@gmail.com"
 EMAIL_PASS = "mhhuliujcrqkzccg"
 
-db = TinyDB('shadow_ministry.json')
+db = TinyDB('shadow_db.json')
 users_table = db.table('users')
 FACES_FOLDER = 'static/faces'
 
-# إنشاء المجلدات إذا لم تكن موجودة
-for folder in ['static/faces', 'static/css', 'static/js', 'static/images']:
+# ضمان وجود المجلدات
+for folder in [FACES_FOLDER, 'static/css', 'static/js', 'static/images']:
     if not os.path.exists(folder): os.makedirs(folder)
 
-# --- 2. دوال التواصل والأمن ---
-
-def send_telegram(msg):
+# --- دوال التواصل (تليجرام + بريد) ---
+def send_tg(msg):
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
         requests.post(url, data={'chat_id': ADMIN_CHAT_ID, 'text': msg, 'parse_mode': 'HTML'}, timeout=5)
     except: pass
 
-def send_email(to_email, subject, body):
+def send_mail(to_email, subject, body):
     try:
         msg = MIMEMultipart()
         msg['From'] = EMAIL_USER
@@ -54,104 +51,79 @@ def send_email(to_email, subject, body):
         server.quit()
     except Exception as e: print(f"Email Error: {e}")
 
-def verify_face_match(stored_id, captured_image_b64):
+# --- معالجة الوجه ---
+def verify_face(stored_id, captured_b64):
     try:
-        # تحويل الصورة الملتقطة من الكاميرا
-        header, encoded = captured_image_b64.split(",", 1)
+        header, encoded = captured_b64.split(",", 1)
         data = base64.b64decode(encoded)
         nparr = np.frombuffer(data, np.uint8)
-        img_captured = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE)
+        img_cap = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE)
         
-        # جلب الصورة الأصلية المخزنة للمستخدم
         stored_path = os.path.join(FACES_FOLDER, f"{stored_id}.jpg")
         img_stored = cv2.imread(stored_path, cv2.IMREAD_GRAYSCALE)
         
         if img_stored is None: return False
-        
-        # مطابقة هندسية (Resize & Match)
-        img_captured = cv2.resize(img_captured, (300, 300))
+        img_cap = cv2.resize(img_cap, (300, 300))
         img_stored = cv2.resize(img_stored, (300, 300))
-        res = cv2.matchTemplate(img_captured, img_stored, cv2.TM_CCOEFF_NORMED)
-        return cv2.minMaxLoc(res)[1] > 0.70 # نسبة دقة 70%
+        res = cv2.matchTemplate(img_cap, img_stored, cv2.TM_CCOEFF_NORMED)
+        return cv2.minMaxLoc(res)[1] > 0.70
     except: return False
 
-# --- 3. مسارات بوابة الدخول (المواطن) ---
-
+# --- المسارات ---
 @app.route('/')
-def index():
-    return render_template('index.html')
+def index(): return render_template('index.html')
 
+# دخول المواطن
 @app.route('/user_login', methods=['GET', 'POST'])
 def user_login():
     if request.method == 'POST':
-        identifier = request.form.get('identifier') # جوال أو هوية
+        ident = request.form.get('identifier')
         pw = request.form.get('password')
-        User = Query()
-        user = users_table.get((User.id_num == identifier) | (User.phone == identifier))
+        U = Query()
+        user = users_table.get((U.id_num == ident) | (U.phone == ident))
         
         if user and user['password'] == pw:
-            if user.get('blocked', False):
-                return render_template('blocked.html')
-            session['pre_verify_id'] = user['id_num']
+            if user.get('blocked'): return render_template('blocked.html')
+            session['pre_id'] = user['id_num']
             return redirect(url_for('face_verify'))
-        return render_template('user_login.html', error="خطأ في البيانات")
+        return render_template('user_login.html', error="بيانات خاطئة")
     return render_template('user_login.html')
 
 @app.route('/face_verify')
-def face_verify():
-    if 'pre_verify_id' not in session: return redirect('/')
-    return render_template('face_verify.html')
+def face_verify(): return render_template('face_verify.html')
 
 @app.route('/api/process_face', methods=['POST'])
-def process_face():
+def api_face():
     data = request.json
-    id_num = session.get('pre_verify_id')
-    if verify_face_match(id_num, data['image']):
+    uid = session.get('pre_id')
+    if verify_face(uid, data['image']):
         session.permanent = True
-        session['user_id'] = id_num
-        # إرسال تلجرام عند الدخول
-        ip = request.remote_addr
+        session['user_id'] = uid
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        send_telegram(f"🔓 <b>دخول جديد</b>\nالمواطن: {id_num}\nالتوقيت: {now}\nIP: {ip}")
+        send_tg(f"🔓 <b>دخول ناجح</b>\nالهوية: {uid}\nالوقت: {now}\nIP: {request.remote_addr}")
         return jsonify({"status": "success"})
     return jsonify({"status": "fail"})
-
-# --- 4. لوحة تحكم المواطن ---
 
 @app.route('/user_home')
 def user_home():
     if 'user_id' not in session: return redirect('/')
     user = users_table.get(Query().id_num == session['user_id'])
-    
-    # تحديث تلقائي لتاريخ انتهاء البطاقة
-    expiry_date = datetime.strptime(user['expiry'], "%Y-%m-%d")
-    if datetime.now() > expiry_date:
-        new_expiry = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
-        users_table.update({'expiry': new_expiry}, Query().id_num == user['id_num'])
-        user['expiry'] = new_expiry
-        
+    # تجديد تلقائي للبطاقة المنتهية
+    exp = datetime.strptime(user['expiry'], "%Y-%m-%d")
+    if datetime.now() > exp:
+        new_exp = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+        users_table.update({'expiry': new_exp}, Query().id_num == user['id_num'])
+        user['expiry'] = new_exp
     return render_template('user_home.html', user=user)
 
-@app.route('/my_data')
-def my_data():
-    if 'user_id' not in session: return redirect('/')
-    user = users_table.get(Query().id_num == session['user_id'])
-    return render_template('my_data.html', user=user)
-
-@app.route('/sites')
-def sites():
-    return render_template('sites.html')
-
-# --- 5. بوابة الإدارة (المشرف) ---
-
+# --- إدارة المشرف ---
 @app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
         if request.form.get('username') == 'admin' and request.form.get('password') == 'admin':
-            otp = random.randint(100000, 999999)
-            session['admin_otp'] = str(otp)
-            # إرسال الرمز للرقم المحدد في الطلب
-            send_telegram(f"🔐 رمز التحقق للمشرف: {otp}")
+            otp = str(random.randint(100000, 999999))
+            session['admin_otp'] = otp
+            send_tg(f"🔐 رمز التحقق للمشرف: <code>{otp}</code>")
             return render_template('admin_otp.html')
     return render_template('admin_login.html')
 
@@ -165,53 +137,69 @@ def admin_verify_otp():
 @app.route('/admin/dashboard')
 def admin_dashboard():
     if not session.get('admin_logged_in'): return redirect('/')
-    users = users_table.all()
-    return render_template('admin_dashboard.html', users=users)
+    return render_template('admin_dashboard.html', users=users_table.all())
 
-@app.route('/admin/add_user', methods=['POST'])
-def api_add_user():
-    data = request.form.to_dict()
-    # حفظ صورة الوجه
-    face_img = request.files.get('face_image')
-    if face_img:
-        face_img.save(os.path.join(FACES_FOLDER, f"{data['id_num']}.jpg"))
-    
-    data['blocked'] = False
-    data['expiry'] = (datetime.now() + timedelta(days=365)).strftime("%Y-%m-%d") # سنة افتراضية
-    users_table.insert(data)
-    
-    # إرسال بيانات الدخول
-    msg = f"مرحباً بك في وزارة الظلال\nهويتك: {data['id_num']}\nكلمة المرور: {data['password']}"
-    send_telegram(f"🆕 تم إضافة مستخدم جديد:\n{msg}")
-    send_email(data['email'], "بيانات دخول وزارة الظلال", msg)
-    
+@app.route('/admin/add_user', methods=['GET', 'POST'])
+def admin_add_user():
+    if not session.get('admin_logged_in'): return redirect('/')
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        file = request.files.get('face_image')
+        if file: file.save(os.path.join(FACES_FOLDER, f"{data['id_num']}.jpg"))
+        data['blocked'] = False
+        data['expiry'] = (datetime.now() + timedelta(days=365)).strftime("%Y-%m-%d")
+        users_table.insert(data)
+        # إرسال البيانات فور الإضافة
+        info = f"هويتك: {data['id_num']}\nكلمة المرور: {data['password']}\nمعرف البصمة: {data['fingerprint_id']}"
+        send_tg(f"🆕 <b>مواطن جديد</b>\n{info}")
+        send_mail(data['email'], "بيانات دخول وزارة الظلال", info)
+        return redirect(url_for('admin_dashboard'))
+    return render_template('add_user.html')
+
+@app.route('/admin/toggle_block/<id_num>', methods=['POST'])
+def toggle_block(id_num):
+    user = users_table.get(Query().id_num == id_num)
+    new_state = not user.get('blocked', False)
+    users_table.update({'blocked': new_state}, Query().id_num == id_num)
     return redirect(url_for('admin_dashboard'))
 
-# --- 6. نظام الإشعارات المركزي ---
+@app.route('/admin/send_credentials/<id_num>', methods=['POST'])
+def send_creds(id_num):
+    u = users_table.get(Query().id_num == id_num)
+    info = f"بيانات دخولك:\nالهوية: {u['id_num']}\nالكلمة: {u['password']}\nالبصمة: {u['fingerprint_id']}"
+    send_tg(info)
+    send_mail(u['email'], "تذكير ببيانات الدخول", info)
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_user/<id_num>', methods=['POST'])
+def delete_user(id_num):
+    users_table.remove(Query().id_num == id_num)
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/send_broadcast', methods=['POST'])
-def send_broadcast():
-    target_type = request.form.get('type') # person, region, job, edu, gender
-    content = request.form.get('message')
-    platform = request.form.get('platform') # telegram, email, pwa
+def broadcast():
+    t_type = request.form.get('target_type')
+    t_val = request.form.get('target_val')
+    msg = request.form.get('message')
+    plats = request.form.getlist('platforms')
     
-    query = Query()
-    targets = []
-    
-    if target_type == 'all': targets = users_table.all()
-    elif target_type == 'region': targets = users_table.search(query.region == request.form.get('target_val'))
-    # ... إضافة باقي الفلاتر هنا
+    U = Query()
+    if t_type == 'all': targets = users_table.all()
+    elif t_type == 'person': targets = users_table.search(U.id_num == t_val)
+    elif t_type == 'region': targets = users_table.search(U.region == t_val)
+    elif t_type == 'job': targets = users_table.search(U.job_cat == t_val)
+    elif t_type == 'edu': targets = users_table.search(U.edu_level == t_val)
+    elif t_type == 'gender': targets = users_table.search(U.gender == t_val)
     
     for t in targets:
-        if 'telegram' in platform: send_telegram(f"📢 إشعار رسمي:\n{content}")
-        if 'email' in platform: send_email(t['email'], "إشعار من وزارة الظلال", content)
-        
-    return jsonify({"status": "sent"})
+        if 'telegram' in plats: send_tg(f"📢 <b>إشعار رسمي:</b>\n{msg}")
+        if 'email' in plats: send_mail(t['email'], "إشعار من وزارة الظلال", msg)
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect('/')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
