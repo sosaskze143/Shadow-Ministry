@@ -1,33 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>التحقق الحيوي | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>التحقق الحيوي</title>
 </head>
-<body class="bg-darker">
-    <div class="scan-container">
-        <div class="glass-card scan-box">
-            <h2 class="gold-text">مطابقة البصمة الحيوية</h2>
-            <p>يرجى النظر مباشرة إلى الكاميرا في منطقة الإضاءة</p>
-            
-            <div class="camera-frame">
-                <video id="webcam" autoplay playsinline></video>
-                <div class="scanner-overlay">
-                    <div class="scan-line"></div>
-                    <div class="corner top-left"></div>
-                    <div class="corner top-right"></div>
-                    <div class="corner bottom-left"></div>
-                    <div class="corner bottom-right"></div>
-                </div>
-            </div>
+<body>
+    <div class="glass-card text-center">
+        <h3>نظام التعرف على الوجه</h3>
+        <p>ضع وجهك داخل الدائرة الحمراء لبدء التحليل</p>
+        
+        <div id="video-container">
+            <video id="video" autoplay muted></video>
+            <div class="scan-line"></div> </div>
 
-            <div id="status-bar" class="status-msg">جاري تهيئة النظام...</div>
-            <button id="capture-btn" class="btn-scan" onclick="startScanning()">بدء التحليل الفوري</button>
+        <div class="controls mt-20">
+            <button onclick="startCamera()" class="btn-gold">بدء الكاميرا</button>
+            <button onclick="captureAndVerify()" class="btn-gold">بدء التعرف</button>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/face_logic.js') }}"></script>
+
+    <script src="/static/js/face_logic.js"></script>
 </body>
 </html>
