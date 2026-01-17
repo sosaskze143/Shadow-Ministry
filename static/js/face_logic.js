@@ -1,37 +1,32 @@
-async function initCamera() {
-    const video = document.getElementById('webcam');
-    const status = document.getElementById('status-bar');
-
+async function startCamera() {
+    const video = document.getElementById('video');
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: "user", width: 1280, height: 720 } 
-        });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        status.innerText = "البصمة الحيوية جاهزة للتحليل";
-        status.style.color = "#00ff88";
     } catch (err) {
-        status.innerText = "خطأ: يرجى السماح بالوصول للكاميرا";
-        status.style.color = "#ff4d4d";
-        console.error("Camera Error: ", err);
+        alert("يرجى السماح بالوصول للكاميرا لإتمام التحقق");
     }
 }
 
-// استدعاء الكاميرا عند تحميل الصفحة
-if (document.getElementById('webcam')) {
-    initCamera();
-}
+async function captureAndVerify() {
+    const video = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    const imageData = canvas.toDataURL('image/jpeg');
 
-// دالة محاكاة التحليل (ترتبط بـ Backend)
-function startScanning() {
-    const status = document.getElementById('status-bar');
-    const btn = document.getElementById('capture-btn');
-    
-    btn.disabled = true;
-    btn.innerText = "جاري المعالجة...";
-    status.innerText = "يتم الآن مطابقة ملامح الوجه مع السجل المدني...";
-    
-    // محاكاة وقت المعالجة
-    setTimeout(() => {
-        window.location.href = "/auth_success";
-    }, 3500);
+    const response = await fetch('/api/process_face', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: imageData })
+    });
+
+    const result = await response.json();
+    if (result.status === "success") {
+        window.location.href = "/user_home";
+    } else {
+        alert("فشل التعرف على الوجه. يرجى المحاولة مرة أخرى.");
+    }
 }
