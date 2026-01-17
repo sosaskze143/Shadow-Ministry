@@ -1,10 +1,10 @@
 {
-  "name": "وزارة الظلال السيادية",
+  "name": "وزارة الظلال - البوابة السيادية",
   "short_name": "الظلال",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0b10",
-  "theme_color": "#d4af37",
+  "theme_color": "#D4AF37",
   "orientation": "portrait",
   "icons": [
     {
