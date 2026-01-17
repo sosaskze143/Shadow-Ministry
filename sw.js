@@ -1,7 +1,20 @@
-self.addEventListener('install', (e) => {
-  console.log('Shadow Ministry SW Installed');
+const CACHE_NAME = 'shadow-v1';
+const assets = [
+  '/',
+  '/static/css/style.css',
+  '/static/js/face_logic.js'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(assets))
+  );
 });
 
-self.addEventListener('fetch', (e) => {
-  // اتركها فارغة للسماح بمرور البيانات الحية من Render
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
 });
