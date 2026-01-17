@@ -2,34 +2,62 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مركز البث | وزارة الظلال</title>
+    <title>مركز البث والتعاميم | وزارة الظلال</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-<body class="broadcast-layout">
-    <div class="glass-card broadcast-container">
-        <h2 class="gold-text"><i class="fas fa-broadcast-tower"></i> نظام البث والتعاميم المركزية</h2>
-        
-        <form action="/api/send_broadcast" method="POST">
-            <div class="filter-box">
-                <label>تحديد الفئة المستهدفة:</label>
-                <div class="filters">
-                    <select name="target_region"><option value="all">كل المناطق</option><script>for(let i=1; i<=25; i++) document.write(`<option>منطقة ${i}</option>`)</script></select>
-                    <select name="target_edu"><option value="all">كل المستويات التعليمية</option><option>جامعي</option><option>ثانوي</option></select>
-                </div>
+<body class="admin-layout">
+    <div class="container py-5">
+        <div class="glass-card broadcast-panel">
+            <div class="panel-header text-center mb-4">
+                <div class="pulse-icon"><i class="fas fa-broadcast-tower"></i></div>
+                <h2 class="gold-text">مركز البث والتعاميم السيادية</h2>
+                <p>إرسال رسائل فورية لشرائح المواطنين عبر المنظومة الرقمية</p>
             </div>
 
-            <div class="channel-box">
-                <label>قنوات البث:</label>
-                <div class="checkboxes">
-                    <span><input type="checkbox" name="chan_tg" checked> تلجرام</span>
-                    <span><input type="checkbox" name="chan_mail"> بريد إلكتروني</span>
+            <form action="/api/send_broadcast" method="POST" class="smart-form">
+                <div class="filter-section glass-card inner-card mb-4">
+                    <h5 class="section-label"><i class="fas fa-filter"></i> تحديد الفئة المستهدفة</h5>
+                    <div class="form-grid-3">
+                        <div class="input-field">
+                            <label>المنطقة المستهدفة</label>
+                            <select name="target_region">
+                                <option value="all">جميع المناطق</option>
+                                {% for i in range(1, 26) %}<option>المنطقة {{i}}</option>{% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label>المستوى التعليمي</label>
+                            <select name="target_edu">
+                                <option value="all">الكل</option>
+                                <option>جامعي</option>
+                                <option>ثانوي</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label>قناة البث</label>
+                            <div class="checkbox-group">
+                                <span><input type="checkbox" name="chan_tg" checked> تلجرام</span>
+                                <span><input type="checkbox" name="chan_pwa"> إشعار تطبيق</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <textarea name="message" placeholder="اكتب نص التعميم الرسمي هنا..." required></textarea>
-            
-            <button type="submit" class="broadcast-btn">إطلاق البث الموحد</button>
-        </form>
+                <div class="message-section">
+                    <label class="gold-text">نص التعميم الرسمي</label>
+                    <textarea name="message" rows="6" placeholder="اكتب نص الرسالة هنا..." required class="custom-textarea"></textarea>
+                    <p class="helper-text">سيتم إرسال هذا النص فوراً لجميع المواطنين المطابقين للفلتر المختار.</p>
+                </div>
+
+                <div class="footer-actions mt-4">
+                    <button type="submit" class="btn-broadcast">
+                        <i class="fas fa-paper-plane"></i> إطلاق البث الموحد
+                    </button>
+                    <a href="/admin/dashboard" class="btn-cancel-link">العودة للوحة الإدارة</a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
