@@ -1,39 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>تعديل السجل | الإدارة المركزية</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>تعديل بيانات مواطن</title>
 </head>
-<body class="bg-deep">
-    <div class="container py-5">
-        <div class="glass-card edit-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-id-card-alt gold-text"></i> تحديث السجل السيادي</h2>
-                <span class="id-display">ID: {{ user.id_num }}</span>
+<body>
+    <div class="glass-card">
+        <h2 class="gold-text">تعديل ملف المواطن: {{ user.id_num }}</h2>
+        <form action="/admin/update_user/{{ user.id_num }}" method="POST">
+            <div class="grid-4">
+                <input type="text" name="fname_ar" value="{{ user.fname_ar }}">
+                <input type="text" name="mname_ar" value="{{ user.mname_ar }}">
+                <input type="text" name="gname_ar" value="{{ user.gname_ar }}">
+                <input type="text" name="lname_ar" value="{{ user.lname_ar }}">
             </div>
-
-            <form action="/api/update_user/{{ user.id_num }}" method="POST" class="grid-form">
-                <div class="form-grid-columns">
-                    <div class="input-field"><label>الاسم الأول</label><input type="text" name="fname_ar" value="{{ user.fname_ar }}"></div>
-                    <div class="input-field"><label>اسم العائلة</label><input type="text" name="lname_ar" value="{{ user.lname_ar }}"></div>
-                    <div class="input-field"><label>رقم الجوال</label><input type="text" name="phone" value="{{ user.phone }}"></div>
-                    <div class="input-field">
-                        <label>حالة الدخول</label>
-                        <select name="is_blocked" class="status-selector">
-                            <option value="0" {% if user.is_blocked == '0' %}selected{% endif %}>نشط (مصرح له)</option>
-                            <option value="1" {% if user.is_blocked == '1' %}selected{% endif %}>محظور (مرفوض)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="edit-actions">
-                    <button type="submit" class="btn-update">حفظ التعديلات</button>
-                    <a href="/admin/dashboard" class="btn-cancel">رجوع</a>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="btn-gold mt-30">حفظ التغييرات السيادية</button>
+        </form>
     </div>
 </body>
 </html>
