@@ -2,18 +2,27 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>دخول مرفوض | وزارة الظلال</title>
+    <title>الدخول مرفوض | وزارة الظلال</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="blocked-layout">
-    <div class="glass-card blocked-card">
-        <div class="red-cross">✖</div>
-        <h1 class="red-text">حسابك محظور من الدخول</h1>
-        <div class="blocked-msg">
-            <p>نأسف لإبلاغك بأن دخولك للنظام السيادي مرفوض حالياً بناءً على مقتضيات المصلحة العامة.</p>
-            <p class="highlight">يجب عليك التوجه فوراً لأقرب فرع لوزارة الظلال لمراجعة حالتك القانونية وتحديث بياناتك الحيوية.</p>
+<body class="blocked-screen">
+    <div class="error-container">
+        <div class="glass-card blocked-box">
+            <div class="red-cross-icon">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <h1 class="alert-title">الدخول مرفوض سيادياً</h1>
+            <div class="alert-body">
+                <p>نحيطكم علماً بأن هذا الحساب قد تم <strong>حظر وصوله</strong> للأنظمة المركزية بناءً على التعليمات الأمنية العليا.</p>
+                <div class="instruction-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>يجب مراجعة أقرب فرع لوزارة الظلال لتحديث بياناتك وتصفية الحالة القانونية.</span>
+                </div>
+            </div>
+            <div class="alert-footer">
+                <a href="/logout" class="btn-close-session">إغلاق الجلسة</a>
+            </div>
         </div>
-        <a href="/logout" class="btn-shadow red-border">إغلاق الجلسة</a>
     </div>
 </body>
 </html>
