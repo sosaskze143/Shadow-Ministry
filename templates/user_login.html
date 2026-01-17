@@ -1,34 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>تسجيل الدخول | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>دخول المواطنين</title>
 </head>
-<body class="bg-auth">
-    <div class="auth-wrapper">
-        <div class="glass-card auth-box">
-            <div class="auth-header">
-                <i class="fas fa-fingerprint gold-text icon-lg"></i>
-                <h2>دخول السجل المدني</h2>
-                <p>يرجى إدخال بيانات الهوية للتحقق</p>
-            </div>
-            <form action="/user_login" method="POST" class="smart-form">
-                <div class="input-field">
-                    <label><i class="fas fa-id-card"></i> رقم الهوية الوطنية</label>
-                    <input type="text" name="id_number" placeholder="10xxxxxxxx" required>
+<body>
+    <div class="flex-center" style="height: 100vh;">
+        <div class="glass-card" style="width: 400px;">
+            <h2 class="text-center gold-text">تسجيل دخول المستخدم</h2>
+            <form action="/user_login" method="POST" class="mt-20">
+                <div class="form-group">
+                    <label>رقم الهوية أو الجوال</label>
+                    <input type="text" name="identifier" required>
                 </div>
-                <div class="input-field">
-                    <label><i class="fas fa-lock"></i> كلمة المرور</label>
-                    <input type="password" name="password" placeholder="••••••••" required>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" name="password" required>
                 </div>
-                <button type="submit" class="btn-gold-block">متابعة للتحقق الحيوي</button>
+                <button type="submit" class="btn-gold" style="width: 100%;">التالي (التحقق الحيوي)</button>
             </form>
-            <div class="auth-footer">
-                <a href="/">العودة للرئيسية</a>
-            </div>
         </div>
     </div>
 </body>
