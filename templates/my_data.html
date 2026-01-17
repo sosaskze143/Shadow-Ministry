@@ -2,27 +2,44 @@
 <html lang="ar" dir="rtl">
 <head>
     <link rel="stylesheet" href="/static/css/style.css">
-    <title>بياناتي الشخصية</title>
+    <title>بياناتي المفصلة</title>
 </head>
 <body>
     <div class="glass-card">
         <h2 class="gold-text">المعلومات الشخصية</h2>
-        <div class="data-grid">
+        <div class="grid-4">
             <div class="data-item"><span class="label">الاسم الأول</span><span class="value">{{ user.fname_ar }}</span></div>
             <div class="data-item"><span class="label">اسم الأب</span><span class="value">{{ user.mname_ar }}</span></div>
             <div class="data-item"><span class="label">اسم الجد</span><span class="value">{{ user.gname_ar }}</span></div>
             <div class="data-item"><span class="label">العائلة</span><span class="value">{{ user.lname_ar }}</span></div>
         </div>
+        <div class="grid-4 mt-10">
+            <div class="data-item"><span class="label">First Name</span><span class="value">{{ user.fname_en }}</span></div>
+            <div class="data-item"><span class="label">Father Name</span><span class="value">{{ user.mname_en }}</span></div>
+            <div class="data-item"><span class="label">Grandfather Name</span><span class="value">{{ user.gname_en }}</span></div>
+            <div class="data-item"><span class="label">Family Name</span><span class="value">{{ user.lname_en }}</span></div>
+        </div>
 
-        <div class="data-grid mt-20">
-            <div class="data-item"><span class="label">English Name</span><span class="value">{{ user.fname_en }} {{ user.lname_en }}</span></div>
+        <div class="grid-3 mt-20">
             <div class="data-item"><span class="label">رقم الهوية</span><span class="value">{{ user.id_num }}</span></div>
             <div class="data-item"><span class="label">معرف البصمة</span><span class="value">{{ user.fingerprint_id }}</span></div>
             <div class="data-item"><span class="label">الجنس</span><span class="value">{{ user.gender }}</span></div>
         </div>
+        <div class="grid-3">
+            <div class="data-item"><span class="label">الجنسية</span><span class="value">{{ user.nationality }}</span></div>
+            <div class="data-item"><span class="label">تاريخ الميلاد</span><span class="value">{{ user.dob }}</span></div>
+        </div>
+
+        <h2 class="gold-text mt-30">المهنة والتعليم</h2>
+        <div class="grid-4">
+            <div class="data-item"><span class="label">فئة المهنة</span><span class="value">{{ user.job_cat }}</span></div>
+            <div class="data-item"><span class="label">المهنة</span><span class="value">{{ user.job_title }}</span></div>
+            <div class="data-item"><span class="label">مستوى التعليم</span><span class="value">{{ user.edu_level }}</span></div>
+            <div class="data-item"><span class="label">تاريخ الميلاد</span><span class="value">{{ user.dob }}</span></div>
+        </div>
 
         <h2 class="gold-text mt-30">بيانات التواصل</h2>
-        <div class="data-grid">
+        <div class="grid-3">
             <div class="data-item"><span class="label">رقم الجوال</span><span class="value">{{ user.phone }}</span></div>
             <div class="data-item"><span class="label">البريد الإلكتروني</span><span class="value">{{ user.email }}</span></div>
             <div class="data-item"><span class="label">المنطقة</span><span class="value">{{ user.region }}</span></div>
