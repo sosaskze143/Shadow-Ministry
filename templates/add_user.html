@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة سجل سيادي | وزارة الظلال</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="form-layout">
+    <div class="glass-card form-container">
+        <h2 class="form-title"><i class="fas fa-user-plus"></i> تسجيل مواطن جديد في النظام</h2>
+        <form action="/api/add_user" method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
+                <div class="form-group"><label>الاسم الأول</label><input type="text" name="fname_ar" required></div>
+                <div class="form-group"><label>اسم الأب</label><input type="text" name="mname_ar" required></div>
+                <div class="form-group"><label>اسم الجد</label><input type="text" name="gname_ar" required></div>
+                <div class="form-group"><label>العائلة</label><input type="text" name="lname_ar" required></div>
+                
+                <div class="form-group"><label>First Name</label><input type="text" name="fname_en" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="lname_en" required></div>
+                <div class="form-group"><label>رقم الهوية</label><input type="text" name="id_num" required></div>
+                <div class="form-group"><label>الجوال</label><input type="text" name="phone" required></div>
+                
+                <div class="form-group"><label>التعليم</label>
+                    <select name="edu">
+                        <option>تعليم جامعي</option><option>ثانوي</option><option>تعليم عالي</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>المنطقة</label>
+                    <select name="region">
+                        <script>for(let i=1; i<=25; i++) document.write(`<option>منطقة ${i}</option>`)</script>
+                    </select>
+                </div>
+                <div class="form-group"><label>البريد</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>كلمة المرور</label><input type="password" name="pw" required></div>
+            </div>
+
+            <div class="upload-section">
+                <p>صورة البصمة الحيوية (الوجه)</p>
+                <input type="file" name="face_img" accept="image/*" required id="fileInput">
+                <label for="fileInput" class="upload-btn"><i class="fas fa-camera"></i> اختر الصورة</label>
+            </div>
+
+            <button type="submit" class="save-btn">تفعيل السجل وإرسال البيانات <i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+</body>
+</html>
