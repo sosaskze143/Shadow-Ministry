@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>منظومة الخدمات | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>منظومة مواقع وزارة الظلال</title>
 </head>
-<body class="bg-darker">
-    <div class="container text-center py-5">
-        <h2 class="gold-text mb-5">بوابة الخدمات المتكاملة</h2>
-        <div class="services-grid">
-            <div class="glass-card service-box">
-                <div class="service-icon"><i class="fas fa-university"></i></div>
+<body>
+    <header class="shadow-header">
+        <div class="logo-section">
+            <img src="/static/images/logo.png" alt="Logo">
+            <h1>مواقعنا السيادية</h1>
+        </div>
+        <a href="/user_home" class="btn-gold">رجوع</a>
+    </header>
+
+    <main class="container">
+        <div class="grid-3">
+            <div class="glass-card text-center">
+                <img src="/static/images/bank-icon.png" style="height:80px">
                 <h3>البنك المركزي</h3>
-                <p>إدارة الحسابات المالية السيادية والرواتب.</p>
-                <button class="btn-enter">دخول النظام</button>
+                <p>إدارة الحسابات السيادية والتحويلات المشفرة.</p>
+                <a href="/bank/dashboard" class="btn-gold">انتقل الآن</a>
             </div>
-            <div class="glass-card service-box">
-                <div class="service-icon"><i class="fas fa-car-side"></i></div>
-                <h3>المركبات الوطنية</h3>
-                <p>إدارة التراخيص والمخالفات المرورية المركزية.</p>
-                <button class="btn-enter">دخول النظام</button>
+
+            <div class="glass-card text-center">
+                <img src="/static/images/car-icon.png" style="height:80px">
+                <h3>المركبات والمخالفات</h3>
+                <p>نظام تتبع المركبات ورصد المخالفات المرورية.</p>
+                <a href="/traffic/dashboard" class="btn-gold">انتقل الآن</a>
             </div>
-            <div class="glass-card service-box">
-                <div class="service-icon"><i class="fas fa-briefcase-medical"></i></div>
-                <h3>الضمان الصحي</h3>
-                <p>السجلات الطبية والتأمين الصحي للمواطنين.</p>
-                <button class="btn-enter">دخول النظام</button>
+
+            <div class="glass-card text-center">
+                <img src="/static/images/services-icon.png" style="height:80px">
+                <h3>خدماتي</h3>
+                <p>بوابة الخدمات الحكومية والوثائق الرسمية.</p>
+                <a href="/services/dashboard" class="btn-gold">انتقل الآن</a>
             </div>
         </div>
-        <div class="mt-5">
-            <a href="/user_home" class="back-link-gold">العودة للبوابة الشخصية</a>
-        </div>
-    </div>
+    </main>
 </body>
 </html>
