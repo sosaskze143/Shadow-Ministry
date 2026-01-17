@@ -1,74 +1,64 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>لوحة التحكم السيادية | الإدارة المركزية</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>الإدارة السيادية | وزارة الظلال</title>
 </head>
-<body class="admin-layout">
-    <div class="dashboard-container">
-        <div class="stats-row">
-            <div class="stat-card glass-card">
-                <i class="fas fa-users-cog"></i>
-                <div class="stat-txt"><h3>المواطنين</h3><p>{{ users|length }}</p></div>
-            </div>
-            <div class="stat-card glass-card gold-border">
-                <i class="fas fa-shield-alt"></i>
-                <div class="stat-txt"><h3>الطلبات النشطة</h3><p>24</p></div>
-            </div>
-            <div class="stat-card glass-card red-border">
-                <i class="fas fa-user-slash"></i>
-                <div class="stat-txt"><h3>المحظورين</h3><p>12</p></div>
-            </div>
+<body>
+    <header class="shadow-header">
+        <div class="logo-section">
+            <img src="/static/images/logo.png">
+            <h1>لوحة السيطرة</h1>
+        </div>
+        <nav>
+            <a href="/admin/dashboard" class="btn-gold">الرئيسية</a>
+            <a href="/admin/users" class="btn-gold">المستخدمين</a>
+            <a href="/admin/notifications" class="btn-gold">الإشعارات</a>
+            <a href="/logout" class="btn-gold" style="background:#ff4444">خروج</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="grid-4">
+            <div class="glass-card"><h4>المواطنين</h4><p class="value">{{ users|length }}</p></div>
+            <div class="glass-card"><h4>العمليات اليوم</h4><p class="value">1,240</p></div>
+            <div class="glass-card"><h4>تنبيهات أمنية</h4><p class="value" style="color:red">3</p></div>
+            <div class="glass-card"><h4>حالة النظام</h4><p class="value" style="color:green">مستقر</p></div>
         </div>
 
-        <div class="glass-card table-section">
-            <div class="table-tools">
-                <h2>سجل السيادة المدني</h2>
-                <div class="search-box">
-                    <input type="text" id="adminSearch" onkeyup="filterTable()" placeholder="بحث بالهوية أو الاسم...">
-                    <i class="fas fa-search"></i>
-                </div>
-                <a href="/admin/add_user" class="btn-add-gold"><i class="fas fa-plus"></i> إضافة مواطن</a>
+        <div class="glass-card mt-30">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <input type="text" id="searchBox" placeholder="بحث بالهوية، الاسم، الجوال..." style="width:70%">
+                <a href="/admin/add_user_page" class="btn-gold">+ إضافة مستخدم</a>
             </div>
-
-            <table class="sovereign-table">
-                <thead>
+            
+            <table style="width:100%; text-align:right; border-collapse: collapse;">
+                <thead style="border-bottom: 2px solid var(--gold);">
                     <tr>
-                        <th>المواطن</th>
-                        <th>رقم الهوية</th>
+                        <th>الاسم</th>
+                        <th>الهوية</th>
                         <th>المنطقة</th>
-                        <th>الحالة</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody id="userRows">
+                <tbody>
                     {% for user in users %}
-                    <tr>
-                        <td class="user-meta">
-                            <img src="/static/faces/{{ user.id_num }}.jpg" onerror="this.src='/static/images/user_placeholder.png'">
-                            <span>{{ user.fname_ar }} {{ user.lname_ar }}</span>
-                        </td>
-                        <td><span class="id-tag">{{ user.id_num }}</span></td>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <td>{{ user.fname_ar }} {{ user.lname_ar }}</td>
+                        <td>{{ user.id_num }}</td>
                         <td>{{ user.region }}</td>
                         <td>
-                            <span class="status-pill {{ 'blocked' if user.is_blocked == '1' else 'active' }}">
-                                {{ 'محظور' if user.is_blocked == '1' else 'نشط' }}
-                            </span>
-                        </td>
-                        <td class="action-icons">
-                            <a href="/admin/edit_user/{{ user.id_num }}" title="تعديل"><i class="fas fa-edit"></i></a>
-                            <button onclick="deleteUser('{{ user.id_num }}')" class="btn-del"><i class="fas fa-trash"></i></button>
+                            <button class="btn-gold" style="padding:5px 10px;">تعديل</button>
+                            <button class="btn-gold" style="padding:5px 10px; background:{% if user.blocked %}#27ae60{% else %}#c0392b{% endif %};">
+                                {% if user.blocked %}إلغاء الحظر{% else %}حظر{% endif %}
+                            </button>
+                            <button class="btn-gold" style="padding:5px 10px; background:#2980b9;">إرسال البيانات</button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-    </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    </main>
 </body>
 </html>
