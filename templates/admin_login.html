@@ -4,27 +4,38 @@
     <meta charset="UTF-8">
     <title>بوابة الآمنين | دخول المشرف</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-<body class="admin-auth-bg">
-    <div class="auth-glass-box">
-        <div class="admin-icon-top"><i class="fas fa-user-tie"></i></div>
-        <h2 class="gold-text">نظام إدارة وزارة الظلال</h2>
-        <p style="font-size: 0.8rem; margin-bottom: 25px; opacity: 0.7;">يسمح بالدخول للمصرح لهم فقط</p>
-        
-        <form action="/admin_login" method="POST" class="auth-form">
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" name="username" value="admin" placeholder="اسم المستخدم" required>
+<body class="bg-admin-auth">
+    <div class="auth-full-page">
+        <div class="glass-card login-panel">
+            <div class="security-seal">
+                <i class="fas fa-user-secret gold-text"></i>
             </div>
-            <div class="input-group">
-                <i class="fas fa-shield-alt"></i>
-                <input type="password" name="password" value="admin" placeholder="كلمة المرور" required>
+            <h2>نظام الإدارة السيادي</h2>
+            <p>يسمح بالدخول للمصرح لهم فقط بموجب الصلاحيات</p>
+            
+            <form action="/admin_login" method="POST" class="smart-form">
+                <div class="input-field">
+                    <label>اسم المستخدم</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user-tie"></i>
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label>كلمة المرور</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-admin-submit">التحقق من الاعتماد</button>
+            </form>
+            <div class="auth-helper">
+                <a href="/"><i class="fas fa-home"></i> العودة للبوابة الرئيسية</a>
             </div>
-            <button type="submit" class="submit-btn admin-btn">تحقق من الهوية <i class="fas fa-chevron-left"></i></button>
-        </form>
-        <a href="/" class="back-link">العودة للبوابة الرئيسية</a>
+        </div>
     </div>
 </body>
 </html>
