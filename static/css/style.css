@@ -132,3 +132,22 @@ input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 8px var(
     .glass-card { padding: 15px; }
     .gold-text { font-size: 1.5rem; }
 }
+/* تنسيق الصور لتكون متناسقة */
+img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.logo-section img {
+    max-height: 80px; /* تحجيم الشعار في الهيدر */
+    margin-bottom: 10px;
+}
+
+.id-photo img {
+    width: 150px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--gold);
+}
