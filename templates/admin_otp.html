@@ -1,32 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>التحقق الثنائي | وزارة الظلال</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="manifest" href="{{ url_for('manifest') }}">
-<meta name="theme-color" content="#d4af37">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>التحقق الأمني | المشرف</title>
 </head>
-<body class="bg-darker">
-    <div class="otp-wrapper">
-        <div class="glass-card otp-box">
-            <i class="fas fa-shield-virus gold-text icon-xl"></i>
-            <h2>رمز التحقق الأمني</h2>
-            <p>تم إرسال رمز الدخول إلى الرقم المعتمد:</p>
-            <span class="phone-display">0554588686</span>
+<body>
+    <div class="flex-center" style="height: 100vh;">
+        <div class="glass-card text-center" style="max-width: 400px;">
+            <h2 class="gold-text">رمز التحقق السيادي</h2>
+            <p>تم إرسال رمز الدخول إلى هاتف الإدارة عبر تلجرام</p>
             
-            <form action="/admin/dashboard" method="GET" class="otp-form">
-                <div class="otp-inputs">
-                    <input type="text" maxlength="1" class="otp-unit">
-                    <input type="text" maxlength="1" class="otp-unit">
-                    <input type="text" maxlength="1" class="otp-unit">
-                    <input type="text" maxlength="1" class="otp-unit">
-                    <input type="text" maxlength="1" class="otp-unit">
-                    <input type="text" maxlength="1" class="otp-unit">
-                </div>
-                <button type="submit" class="btn-gold-block">تأكيد الهوية</button>
+            <form action="/admin_verify_otp" method="POST" class="mt-20">
+                <input type="text" name="otp" placeholder="- - - - - -" 
+                       style="text-align: center; font-size: 2rem; letter-spacing: 10px;" required>
+                <button type="submit" class="btn-gold mt-20" style="width: 100%;">تأكيد الدخول</button>
             </form>
-            <p class="timer">صلاحية الرمز: <span id="countdown">04:59</span></p>
         </div>
     </div>
 </body>
