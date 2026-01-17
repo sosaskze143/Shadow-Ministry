@@ -2,46 +2,85 @@
 <html lang="ar" dir="rtl">
 <head>
     <link rel="stylesheet" href="/static/css/style.css">
-    <title>بث الإشعارات السيادية</title>
+    <title>إرسال التعميمات السيادية</title>
 </head>
 <body>
     <div class="glass-card">
-        <h2>إرسال تعميم رسمي</h2>
-        <form action="/admin/send_broadcast" method="POST">
+        <h2 class="gold-text">مركز بث الإشعارات الموحد</h2>
+        <form action="/admin/send_broadcast" method="POST" enctype="multipart/form-data">
+            
             <div class="form-group">
-                <label>نوع الاستهداف:</label>
-                <select name="type" id="targetType" onchange="toggleInputs()">
-                    <option value="all">الكل</option>
-                    <option value="person">شخص محدد</option>
+                <label>اختر نوع الاستهداف:</label>
+                <select name="target_type" id="target_type" onchange="updateTargetFields()" class="full-width">
+                    <option value="all">الكل (تعميم شامل)</option>
+                    <option value="person">لشخص محدد (عبر رقم الهوية)</option>
                     <option value="region">منطقة محددة</option>
-                    <option value="job">فئة مهنة</option>
+                    <option value="job">فئة مهنة محددة</option>
+                    <option value="edu">مستوى تعليم محدد</option>
+                    <option value="gender">جنس محدد</option>
                 </select>
             </div>
 
-            <div id="targetValContainer" class="form-group" style="display:none;">
-                <input type="text" name="target_val" id="targetVal" placeholder="أدخل القيمة المختارة...">
+            <div id="dynamic_filter" class="form-group mt-20">
+                </div>
+
+            <h3 class="gold-text mt-30">محتوى الإشعار</h3>
+            <div class="form-group">
+                <label>عنوان الإشعار (لإشعارات الجوال):</label>
+                <input type="text" name="subject" placeholder="أدخل العنوان هنا...">
+            </div>
+            
+            <div class="form-group">
+                <label>نص الرسالة / الإشعار:</label>
+                <textarea name="message" rows="5" placeholder="اكتب نص الإشعار هنا..." class="full-width"></textarea>
             </div>
 
             <div class="form-group">
-                <label>نص الإشعار:</label>
-                <textarea name="message" rows="5" style="width:100%; background:rgba(0,0,0,0.3); color:white;"></textarea>
+                <label>إرفاق صورة (للتلجرام والبريد):</label>
+                <input type="file" name="attachment" accept="image/*">
             </div>
 
+            <h3 class="gold-text mt-30">منصة الإرسال</h3>
             <div class="grid-3">
-                <label><input type="checkbox" name="platform" value="telegram"> تيليجرام</label>
-                <label><input type="checkbox" name="platform" value="email"> بريد إلكتروني</label>
-                <label><input type="checkbox" name="platform" value="pwa"> إشعار جوال</label>
+                <label class="checkbox-container">
+                    <input type="checkbox" name="platforms" value="telegram"> تيليجرام
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" name="platforms" value="email"> بريد إلكتروني
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" name="platforms" value="pwa"> إشعار جوال
+                </label>
             </div>
 
-            <button type="submit" class="btn-gold mt-30" style="width:100%">تأكيد الإرسال النهائي</button>
+            <button type="submit" class="btn-gold mt-30" style="width: 100%;">تأكيد الإرسال النهائي</button>
         </form>
     </div>
 
     <script>
-        function toggleInputs() {
-            const type = document.getElementById('targetType').value;
-            const container = document.getElementById('targetValContainer');
-            container.style.display = (type === 'all') ? 'none' : 'block';
+        function updateTargetFields() {
+            const type = document.getElementById('target_type').value;
+            const container = document.getElementById('dynamic_filter');
+            container.innerHTML = '';
+
+            if (type === 'person') {
+                container.innerHTML = '<label>أدخل رقم الهوية:</label><input type="text" name="target_val" required placeholder="10xxxxxxxx">';
+            } else if (type === 'region') {
+                let options = '';
+                for(let i=1; i<=25; i++) options += `<option value="منطقة ${i}">منطقة ${i}</option>`;
+                container.innerHTML = `<label>اختر المنطقة:</label><select name="target_val">${options}</select>`;
+            } else if (type === 'job') {
+                container.innerHTML = `<label>اختر الفئة:</label><select name="target_val">
+                    <option value="لايوجد">لايوجد</option><option value="طالب">طالب</option>
+                    <option value="خاص">خاص</option><option value="حكومي">حكومي</option></select>`;
+            } else if (type === 'edu') {
+                container.innerHTML = `<label>اختر المستوى:</label><select name="target_val">
+                    <option value="لم يدرس">لم يدرس</option><option value="تعليم ابتدائي">تعليم ابتدائي</option>
+                    <option value="تعليم متوسط">تعليم متوسط</option><option value="تعليم ثانوي">تعليم ثانوي</option>
+                    <option value="تعليم جامعي">تعليم جامعي</option><option value="تعليم جامعي عالي">تعليم جامعي عالي</option></select>`;
+            } else if (type === 'gender') {
+                container.innerHTML = '<label>اختر الجنس:</label><select name="target_val"><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select>';
+            }
         }
     </script>
 </body>
